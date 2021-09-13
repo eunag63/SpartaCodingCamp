@@ -54,21 +54,38 @@
         function listing() {
             $.ajax({
                 type: "GET",
-                url: "/diary?sample_give=샘플데이터",
+                url: "/diary",
                 data: {},
                 success: function (response) {
-                    alert(response['msg'])
+                    let diaries = response['all_diary']
+                    // console.log(diaries)
+                    for (let i = 0; i < diaries.length; i++) {
+                        let title = diaries[i]['title']
+                        let content = diaries[i]['content']
+                        // console.log(title, content)
+                        let temp_html = `<div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${title}</h5>
+                                                <p class="card-text">${content}</p>
+                                            </div>
+                                        </div>`
+                        $('#card-box').append(temp_html)
+                    }
                 }
             })
         }
 
         function posting() {
+            let title = $('#title').val()
+            let content = $('#content').val()
+
             $.ajax({
                 type: "POST",
                 url: "/diary",
-                data: {sample_give: '샘플데이터'},
+                data: {title_give: title, content_give: content},
                 success: function (response) {
                     alert(response['msg'])
+                    window.location.reload()
                 }
             })
         }
@@ -82,52 +99,18 @@
             <h1>나홀로 일기장</h1>
             <div class="posting-box">
                 <div class="form-group">
-                    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="사진 제목">
+                    <input type="email" class="form-control" id="title" placeholder="사진 제목">
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"
+                    <textarea class="form-control" id="content" rows="3"
                               placeholder="내용 입력"></textarea>
                 </div>
                 <button onclick="posting()" type="button" class="btn btn-primary">저장하기</button>
             </div>
         </div>
     </div>
-    <div class="card-columns">
-        <div class="card">
-            <!--        <img class="card-img-top" src="..." alt="Card image cap">-->
-            <div class="card-body">
-                <h5 class="card-title">봉봉 먹고 싶다</h5>
-                <p class="card-text">요즘따라 봉봉이 먹고 싶다 휴</p>
-            </div>
-        </div>
-        <div class="card">
-            <!--        <img class="card-img-top" src="..." alt="Card image cap">-->
-            <div class="card-body">
-                <h5 class="card-title">봉봉 먹고 싶다</h5>
-                <p class="card-text">요즘따라 봉봉이 먹고 싶다 휴</p>
-            </div>
-        </div>
-        <div class="card">
-            <!--        <img class="card-img-top" src="..." alt="Card image cap">-->
-            <div class="card-body">
-                <h5 class="card-title">봉봉 먹고 싶다</h5>
-                <p class="card-text">요즘따라 봉봉이 먹고 싶다 휴</p>
-            </div>
-        </div>
-        <div class="card">
-            <!--        <img class="card-img-top" src="..." alt="Card image cap">-->
-            <div class="card-body">
-                <h5 class="card-title">봉봉 먹고 싶다</h5>
-                <p class="card-text">요즘따라 봉봉이 먹고 싶다 휴</p>
-            </div>
-        </div>
-        <div class="card">
-            <!--        <img class="card-img-top" src="..." alt="Card image cap">-->
-            <div class="card-body">
-                <h5 class="card-title">봉봉 먹고 싶다</h5>
-                <p class="card-text">요즘따라 봉봉이 먹고 싶다 휴</p>
-            </div>
-        </div>
+    <div class="card-columns" id="card-box">
+
     </div>
 </div>
 
