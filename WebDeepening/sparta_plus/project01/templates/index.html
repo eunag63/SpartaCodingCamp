@@ -72,9 +72,11 @@
                     for (let i = 0; i < diaries.length; i++) {
                         let title = diaries[i]['title']
                         let content = diaries[i]['content']
+                        let file = diaries[i]['file']
+
                         // console.log(title, content)
                         let temp_html = `<div class="card">
-                                            <img src="../static/chobab.jpeg" class="card-img-top">
+                                            <img src="../static/${file}" class="card-img-top">
                                             <div class="card-body">
                                                 <h5 class="card-title">${title}</h5>
                                                 <p class="card-text">${content}</p>
