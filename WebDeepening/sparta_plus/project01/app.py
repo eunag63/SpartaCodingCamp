@@ -19,6 +19,11 @@ def save_diary():
     title_receive = request.form['title_give']
     content_receive = request.form['content_give']
 
+    # 이미지 저장하기
+    file = request.files["file_give"]
+    save_to = 'static/mypicture.jpg'
+    file.save(save_to)
+
     doc = {
         'title': title_receive,
         'content': content_receive

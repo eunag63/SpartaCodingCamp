@@ -86,20 +86,32 @@
             })
         }
 
+        // 이미지 저장하여 파일에 저장
         function posting() {
             let title = $('#title').val()
-            let content = $('#content').val()
+            let content = $("#content").val()
+
+            let file = $('#file')[0].files[0]
+            let form_data = new FormData()
+
+            form_data.append("file_give", file)
+            form_data.append("title_give", title)
+            form_data.append("content_give", content)
 
             $.ajax({
                 type: "POST",
                 url: "/diary",
-                data: {title_give: title, content_give: content},
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
                 success: function (response) {
-                    alert(response['msg'])
+                    alert(response["msg"])
                     window.location.reload()
                 }
-            })
+            });
         }
+
     </script>
 </head>
 
@@ -110,8 +122,8 @@
             <h1>나홀로 일기장</h1>
             <div class="posting-box">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="customFile">
-                    <label class="custom-file-label" for="customFile">사진 선택하기</label>
+                    <input type="file" class="custom-file-input" id="file">
+                    <label class="custom-file-label" for="file">사진 선택하기</label>
                 </div>
                 <div class="form-group">
                     <input type="email" class="form-control" id="title" placeholder="사진 제목">
