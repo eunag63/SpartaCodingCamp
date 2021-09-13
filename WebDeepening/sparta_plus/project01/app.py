@@ -5,6 +5,8 @@ from pymongo import MongoClient
 client = MongoClient('localhost', 27017)
 db = client.dbsparta_plus_week1
 
+from datetime import datetime
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -21,12 +23,21 @@ def save_diary():
 
     # 이미지 저장하기
     file = request.files["file_give"]
-    save_to = 'static/mypicture.jpg'
+
+    # 확장자 나눠주기
+    extension = file.filename.split('.')[-1]
+
+    today = datetime.now()
+    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+    filename = f'file-{mytime}'
+
+    save_to = f'static/{filename}.{extension}'
     file.save(save_to)
 
     doc = {
         'title': title_receive,
-        'content': content_receive
+        'content': content_receive,
+        'file': f'{filename}.{extension}'
     }
 
     db.diary.insert_one(doc)
