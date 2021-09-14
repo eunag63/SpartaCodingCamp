@@ -127,6 +127,39 @@
             })
         }
 
+        {#저장#}
+        function save_word() {
+            $.ajax({
+                type: "POST",
+                url: `/api/save_word`,
+                data: {
+                    word_give: "{{ word }}",
+                    definition_give: "{{ result.definitions[0].definition }}"
+                },
+                success: function (response) {
+                    alert(response["msg"])
+
+                    window.location.href = "/detail/{{ word }}?status_give=old"
+
+                }
+            });
+        }
+
+        {#삭제#}
+        function delete_word() {
+            $.ajax({
+                type: "POST",
+                url: `/api/delete_word`,
+                data: {
+                    word_give: "{{ word }}"
+                },
+                success: function (response) {
+                    alert(response["msg"])
+
+                    window.location.href = "/"
+                }
+            });
+        }
 
     </script>
 
@@ -148,11 +181,11 @@
             </div>
 
             {% if status == "new" %}
-                <button id="btn-save" class="btn btn-outline-sparta btn-lg">
+                <button id="btn-save" class="btn btn-outline-sparta btn-lg" onclick="save_word()">
                     <i class="fa fa-bookmark-o" aria-hidden="true"></i>
                 </button>
             {% else %}
-                <button id="btn-delete" class="btn btn-sparta btn-lg">
+                <button id="btn-delete" class="btn btn-sparta btn-lg" onclick="delete_word()">
                     <i class="fa fa-trash-o" aria-hidden="true"></i>
                 </button>
             {% endif %}
@@ -161,13 +194,13 @@
         <hr>
         <div id="definitions">
             {% for definition in result.definitions %}
-            <div style="padding:10px">
-                <i>{{definition.type}}</i>
-                <br>{{definition.definition.encode('ascii','ignore').decode('utf-8')}}<br>
-                {% if definition.example %}
-                    <span class="example">{{definition.example.encode('ascii','ignore').decode('utf-8')|safe}}</span>
-                {% endif %}
-            </div>
+                <div style="padding:10px">
+                    <i>{{ definition.type }}</i>
+                    <br>{{ definition.definition.encode('ascii','ignore').decode('utf-8') }}<br>
+                    {% if definition.example %}
+                        <span class="example">{{ definition.example.encode('ascii','ignore').decode('utf-8')|safe }}</span>
+                    {% endif %}
+                </div>
             {% endfor %}
         </div>
     </div>
