@@ -1,26 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Sparta Vocabulary Notebook</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sparta Vocabulary Notebook</title>
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-              crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
 
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                crossorigin="anonymous"></script>
+    {#    Font Awesome#}
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-    </head>
-    <body>
-    </body>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    {#    css#}
+    <link href='{{ url_for("static", filename="mystyle.css") }}' rel="stylesheet">
+    <style>
+        .search-box {
+            width: 70%;
+            margin: 50px auto;
+            max-width: 700px;
+        }
+
+        .table {
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+            table-layout: fixed;
+        }
+
+        .table th {
+            border-top-style: none;
+        }
+
+        td {
+            background-color: white;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        td > a, a:visited, a:hover, a:active {
+            color: black;
+        }
+
+        thead:first-child tr:first-child th:first-child {
+            border-radius: 10px 0 0 0;
+        }
+
+        thead:first-child tr:first-child th:last-child {
+            border-radius: 0 10px 0 0;
+        }
+
+        tbody:last-child tr:last-child td:first-child {
+            border-radius: 0 0 0 10px;
+        }
+
+        tbody:last-child tr:last-child td:last-child {
+            border-radius: 0 0 10px 0;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <div class="banner" onclick="window.location.href='/'">
+
+    </div>
+    <div class="search-box d-flex justify-content-center">
+        <input id="input-word" class="form-control" style="margin-right: 0.5rem">
+        <button class="btn btn-light" onclick="find_word()"><i class="fa fa-search"></i></button>
+    </div>
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col" style="width:30%">WORD</th>
+            <th scope="col">MEANING</th>
+
+        </tr>
+        </thead>
+        <tbody id="tbody-box">
+        <tr id="word-word">
+            <td><a href="#">word</a></td>
+            <td>a single distinct meaningful element of speech or writing, used with others (or
+                sometimes
+                alone) to form a sentence and typically shown with a space on either side when written
+                or
+                printed.
+            </td>
+        </tr>
+        <tr id="word-dictionary">
+            <td><a href="#">dictionary</a></td>
+            <td>a book or electronic resource that lists the words of a language (typically in
+                alphabetical
+                order) and gives their meaning, or gives the equivalent words in a different language,
+                often
+                also providing information about pronunciation, origin, and
+            </td>
+        </tr>
+        <tr id="word-name">
+            <td><a href="#">name</a></td>
+            <td>a word or set of words by which a person or thing is known, addressed, or referred to.
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
 </html>
