@@ -61,6 +61,7 @@ def delete_word():
 
 @app.route('/api/get_examples', methods=['GET'])
 def get_exs():
+    # 예문 가져오기
     word_receive = request.args.get("word_give")
     result = list(db.examples.find({"word": word_receive}, {'_id': 0}))
     print(word_receive, len(result))
@@ -80,6 +81,7 @@ def save_ex():
 
 @app.route('/api/delete_ex', methods=['POST'])
 def delete_ex():
+    # 예문 삭제하기
     word_receive = request.form['word_give']
     number_receive = int(request.form["number_give"])
     example = list(db.examples.find({"word": word_receive}))[number_receive]["example"]
