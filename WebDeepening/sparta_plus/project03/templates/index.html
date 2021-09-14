@@ -1,84 +1,166 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-        <title>스파르타코딩클럽 | 맛집 검색</title>
-        <script type="text/javascript"
-                src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=2qh48hh78k&submodules=geocoder"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>스파르타코딩클럽 | 맛집 검색</title>
+    <script type="text/javascript"
+            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=2qh48hh78k&submodules=geocoder"></script>
 
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-              crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
 
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                crossorigin="anonymous"></script>
-        <style>
-            .wrap {
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 
-            }
+    {#    폰트#}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Song+Myung&display=swap" rel="stylesheet">
 
-            .banner {
 
-            }
+    <style>
+        .wrap {
+            width: 90%;
+            max-width: 750px;
+            margin: 0 auto;
+        }
 
-            .matjip-list {
+        h1.title {
+            font-family: 'Song Myung', serif;
 
-            }
+            color: white;
+            font-size: 3rem;
+        }
 
-            #map {
-		            width: 100%;
-                height: 50vh;
-                margin: 20px auto 20px auto;
-            }
-        </style>
-        <script>
-            let y_cen = 37.4981125   // lat
-            let x_cen = 127.0379399  // long
-            let map;
-            $(document).ready(function () {
-                map = new naver.maps.Map('map', {
-                    center: new naver.maps.LatLng(y_cen, x_cen),
-                    zoom: 12,
-                    zoomControl: true,
-                    zoomControlOptions: {
-                        style: naver.maps.ZoomControlStyle.SMALL,
-                        position: naver.maps.Position.TOP_RIGHT
+        h5 {
+            font-family: 'Song Myung', serif;
+        }
+
+        .banner {
+            width: 100%;
+            height: 20vh;
+            background-image: url("{{ url_for('static', filename='banner.jpg') }}");
+            background-position: center;
+            background-size: contain;
+            background-repeat: repeat;
+
+        }
+
+        h1.title {
+            color: white;
+            font-size: 3rem;
+        }
+
+        .matjip-list {
+            overflow: scroll;
+            width: 100%;
+            height: calc(20vh - 30px);
+            position: relative;
+        }
+
+        .card-title, .card-subtitle {
+            display: inline;
+        }
+
+        #map {
+            width: 100%;
+            height: 50vh;
+            margin: 20px auto 20px auto;
+        }
+
+
+    </style>
+    <script>
+        let y_cen = 37.4981125   // lat
+        let x_cen = 127.0379399  // long
+        let map;
+        $(document).ready(function () {
+            map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(y_cen, x_cen),
+                zoom: 12,
+                zoomControl: true,
+                zoomControlOptions: {
+                    style: naver.maps.ZoomControlStyle.SMALL,
+                    position: naver.maps.Position.TOP_RIGHT
+                }
+            });
+
+            get_matjips()
+        })
+
+
+        function make_card(i, matjip) {
+            let html_temp = `<div class="card" id="card-${i}">
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="#" class="matjip-title">${matjip['title']}</a></h5>
+                            <h6 class="card-subtitle mb-2 text-muted">${matjip['category']}</h6>
+                            <p class="card-text">${matjip['address']}</p>
+                            <p class="card-text" style="color:blue;">${matjip['show']}</p>
+                        </div>
+                     </div>`;
+            $('#matjip-box').append(html_temp);
+        }
+
+        {#맛집정보 받아오기#}
+
+        function get_matjips() {
+            $('#matjip-box').empty();
+            $.ajax({
+                type: "GET",
+                url: '/matjip',
+                data: {},
+                success: function (response) {
+                    let matjips = response["matjip_list"]
+                    for (let i = 0; i < matjips.length; i++) {
+                        let matjip = matjips[i]
+                        console.log(matjip)
+                        make_card(i, matjip);
+
                     }
-                });
-            })
-        </script>
+                }
+            });
+        }
 
-    </head>
 
-    <body>
-        <div class="wrap">
-            <div class="banner"></div>
-            <div id="map"></div>
+    </script>
 
-						<div class="matjip-list" id="matjip-box">
-                <div class="card" id="card-0">
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="#" class="matjip-title">혼가츠</a></h5>
-                        <h6 class="card-subtitle mb-2 text-muted">일식</h6>
-                        <p class="card-text">서울 마포구 와우산로21길 36-6 (서교동)</p>
-                        <p class="card-text" style="color:blue;">생방송 투데이</p>
-                    </div>
-                </div>
+</head>
+
+<body>
+<div class="wrap">
+    <div class="banner">
+        <div class="d-flex flex-column align-items-center"
+             style="background-color: rgba(0,0,0,0.5);width: 100%;height: 100%;">
+            <h1 class="title mt-5 mb-2">스파르타 맛집 지도</h1>
+        </div>
+    </div>
+    <div id="map"></div>
+
+    <div class="matjip-list" id="matjip-box">
+        <div class="card" id="card-0">
+            <div class="card-body">
+                <h5 class="card-title"><a href="#" class="matjip-title">혼가츠</a></h5>
+                <h6 class="card-subtitle mb-2 text-muted">일식</h6>
+                <p class="card-text">서울 마포구 와우산로21길 36-6 (서교동)</p>
+                <p class="card-text" style="color:blue;">생방송 투데이</p>
             </div>
         </div>
+    </div>
+</div>
 
-    </body>
+</body>
 
 </html>
