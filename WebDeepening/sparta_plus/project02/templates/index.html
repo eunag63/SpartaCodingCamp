@@ -90,29 +90,14 @@
         </tr>
         </thead>
         <tbody id="tbody-box">
-        <tr id="word-word">
-            <td><a href="#">word</a></td>
-            <td>a single distinct meaningful element of speech or writing, used with others (or
-                sometimes
-                alone) to form a sentence and typically shown with a space on either side when written
-                or
-                printed.
-            </td>
-        </tr>
-        <tr id="word-dictionary">
-            <td><a href="#">dictionary</a></td>
-            <td>a book or electronic resource that lists the words of a language (typically in
-                alphabetical
-                order) and gives their meaning, or gives the equivalent words in a different language,
-                often
-                also providing information about pronunciation, origin, and
-            </td>
-        </tr>
-        <tr id="word-name">
-            <td><a href="#">name</a></td>
-            <td>a word or set of words by which a person or thing is known, addressed, or referred to.
-            </td>
-        </tr>
+        {% for word in words %}
+            <tr id="word-{{ word.word }}">
+                <td><a href="/detail/{{ word.word }}?status_give=old">{{ word.word }}</a></td>
+                <td>
+                    {{ word.definition }}
+                </td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div>
