@@ -70,7 +70,48 @@
         tbody:last-child tr:last-child td:last-child {
             border-radius: 0 0 10px 0;
         }
+
+        {#하이라이트 꾸미기#}
+        tr.highlight > td {
+            background-color: #e21f40;
+            color: white;
+        }
+        tr.highlight > td  > a {
+            color: white;
+        }
     </style>
+
+    <script>
+        let words = {{ words|tojson }};
+        let word_list = [];
+        for (let i = 0; i < words.length; i++) {
+            word_list.push(words[i]["word"])
+        }
+        console.log(word_list)
+
+        {#검색기능#}
+        function find_word(){
+            let word = $("#input-word").val().toLowerCase()
+
+            {#빈칸이면 검색 안되게 막아주기#}
+            if (word == ""){
+                alert("값을 입력해주세요")
+                return
+            }
+
+            if (word_list.includes(word)){
+                // 리스트에 있으면 하이라이트 + 위로 올려주기
+                $(`#word-${word}`).addClass("highlight")
+                $(`#word-${word}`).siblings().removeClass("highlight")
+                $(`#word-${word}`)[0].scrollIntoView()
+            }else{
+                // 리스트에 없으면 새 단어를 위한 상세페이지로 가기
+                window.location.href = `/detail/${word}?status_give=new`
+            }
+        }
+
+    </script>
+
 </head>
 <body>
 <div class="wrap">
