@@ -1,66 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Sparta Vocabulary Notebook</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            //get_list()
-        })
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+              integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+              crossorigin="anonymous">
 
-        function get_list() {
-            $.ajax({
-                type: "GET",
-                url: "http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99",
-                data: {},
-                success: function (response) {
-                    let rows = response["RealtimeCityAir"]["row"];
-                    console.log(rows)
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
 
-                    // 비우기
-                    $("#gu-list").empty()
-
-                    for (let i = 0; i < rows.length; i++) {
-                        let gu_name = rows[i]["MSRSTE_NM"]
-                        let gu_mise = rows[i]["IDEX_MVL"]
-                        console.log(gu_name, gu_mise)
-
-                        if (gu_mise <= 40) {
-                            let temp = `<li>${gu_name}: ${gu_mise}</li>`
-
-                            $("#gu-list").append(temp)
-                        }
-
-
-                    }
-                }
-            })
-        }
-
-    </script>
-
-</head>
-<body>
-<h1>상세페이지</h1>
-<button onclick="window.location.href='/'">메인으로 돌아가기</button>
-
-<h3>받은 단어는 {{ word }}</h3>
-
-<ul id="gu-list">
-    <!--    temp-->
-
-    {% for row in rows %}
-        {% set gu_name = row["MSRSTE_NM"] %}
-        {% set gu_mise = row["IDEX_MVL"] %}
-
-        {% if gu_mise<=40 %}
-         <li>{{ gu_name }}: {{ gu_mise|int }}</li>
-        {% endif %}
-
-    {% endfor %}
-
-</ul>
-</body>
+    </head>
+    <body>
+    </body>
 </html>
