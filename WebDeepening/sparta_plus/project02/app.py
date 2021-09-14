@@ -13,14 +13,16 @@ def main():
 
 @app.route('/detail/<keyword>')
 def detail(keyword):
-    r = requests.get('http://openapi.seoul.go.kr:8088/6d4d776b466c656533356a4b4b5872/json/RealtimeCityAir/1/99')
-    response = r.json()
-    rows = response['RealtimeCityAir']['row']
+    # word API
+    r = requests.get(f"https://owlbot.info/api/v4/dictionary/{keyword}", headers={"Authorization": "Token 7e530070d87fefd64570d05ee1e2db30d67332b4"})
+    result = r.json()
+    print(result)
 
-    # 서버에서 받기
+    # 받아오기
     word_receive = request.args.get("word_give")
+    print(word_receive)
 
-    return render_template("detail.html", rows=rows, word=keyword)
+    return render_template("detail.html", word=keyword)
 
 
 if __name__ == '__main__':
