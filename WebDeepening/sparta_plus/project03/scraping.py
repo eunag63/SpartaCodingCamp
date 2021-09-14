@@ -16,6 +16,15 @@ url = "http://matstar.sbs.co.kr/location.html"
 driver.get(url)
 time.sleep(5)
 
+# 버튼 10번 누르기
+for i in range(10):
+    try:
+        btn_more = driver.find_element_by_css_selector("#foodstar-front-location-curation-more-self > div > button")
+        btn_more.click()
+        time.sleep(5)
+    except NoSuchElementException:
+        break
+
 req = driver.page_source
 driver.quit()
 
@@ -44,5 +53,17 @@ for place in places:
             x = float(response["addresses"][0]["x"])
             y = float(response["addresses"][0]["y"])
             print(title, address, category, show, episode, x, y)
+
+            # DB저장
+            doc = {
+                "title": title,
+                "address": address,
+                "category": category,
+                "show": show,
+                "episode": episode,
+                "mapx": x,
+                "mapy": y}
+            db.matjips.insert_one(doc)
+
         else:
             print(title, "좌표를 찾지 못했습니다")
