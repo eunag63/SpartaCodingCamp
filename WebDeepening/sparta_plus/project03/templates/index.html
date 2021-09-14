@@ -30,12 +30,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Song+Myung&display=swap" rel="stylesheet">
 
-{#    og태그와 favicon 링크#}
+    {#    og태그와 favicon 링크#}
     <meta property="og:title" content="스파르타 맛집 지도"/>
     <meta property="og:description" content="mini project for Web Plus"/>
     <meta property="og:image" content="{{ url_for('static', filename='og_image.jpg') }}"/>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <style>
         .wrap {
@@ -116,18 +118,34 @@
             get_matjips()
         })
 
-
         function make_card(i, matjip) {
-            let html_temp = `<div class="card" id="card-${i}">
-                                <div class="card-body">
-                                    <h5 class="card-title"><a href="javascript:click2center(${i})"  class="matjip-title">${matjip['title']}</a></h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">${matjip['category']}</h6>
-                                    <p class="card-text">${matjip['address']}</p>
-                                    <p class="card-text" style="color:blue;">${matjip['show']}</p>
-                                </div>
-                             </div>`;
+            let html_temp = ``;
+            if ("liked" in matjip) {
+                html_temp = `<div class="card" id="card-${i}">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><a href="javascript:click2center(${i})" class="matjip-title">${matjip['title']}</a></h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">${matjip['category']}</h6>
+                                        <i class="fa fa-bookmark" onclick="bookmark('${matjip['title']}', '${matjip['address']}', 'unlike')"></i>
+                                        <p class="card-text">${matjip['address']}</p>
+                                        <p class="card-text" style="color:blue;">${matjip['show']}</p>
+                                    </div>
+                                 </div>`;
+            } else {
+                html_temp = `<div class="card" id="card-${i}">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><a href="javascript:click2center(${i})" class="matjip-title">${matjip['title']}</a></h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">${matjip['category']}</h6>
+                                        <i class="fa fa-bookmark-o" onclick="bookmark('${matjip['title']}', '${matjip['address']}', 'like')"></i>
+                                        <p class="card-text">${matjip['address']}</p>
+                                        <p class="card-text" style="color:blue;">${matjip['show']}</p>
+                                    </div>
+                                 </div>`;
+            }
+
+
             $('#matjip-box').append(html_temp);
         }
+
 
         {#맛집정보 받아오기#}
 
@@ -154,11 +172,18 @@
         {#마커 띄우기#}
 
         function make_marker(matjip) {
+            let marker_img = '';
+            if ("liked" in matjip) {
+                marker_img = '{{ url_for("static", filename="marker-liked.png") }}'
+            } else {
+                marker_img = '{{ url_for("static", filename="marker-default.png") }}'
+            }
             let marker = new naver.maps.Marker({
                 position: new naver.maps.LatLng(matjip["mapy"], matjip["mapx"]),
-                map: map
+                map: map,
+                icon: marker_img
             });
-            markers.push(marker)
+            markers.push(marker);
             return marker
         }
 
@@ -209,6 +234,24 @@
             }
         }
 
+        {#북마크#}
+
+        function bookmark(title, address, action) {
+            $.ajax({
+                type: "POST",
+                url: "/like_matjip",
+                data: {
+                    title_give: title,
+                    address_give: address,
+                    action_give: action
+                },
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        get_matjips()
+                    }
+                }
+            })
+        }
 
     </script>
 
