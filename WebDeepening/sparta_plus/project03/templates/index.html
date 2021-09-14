@@ -30,6 +30,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Song+Myung&display=swap" rel="stylesheet">
 
+{#    og태그와 favicon 링크#}
+    <meta property="og:title" content="스파르타 맛집 지도"/>
+    <meta property="og:description" content="mini project for Web Plus"/>
+    <meta property="og:image" content="{{ url_for('static', filename='og_image.jpg') }}"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 
     <style>
         .wrap {
@@ -113,13 +119,13 @@
 
         function make_card(i, matjip) {
             let html_temp = `<div class="card" id="card-${i}">
-                        <div class="card-body">
-                            <h5 class="card-title"><a href="#" class="matjip-title">${matjip['title']}</a></h5>
-                            <h6 class="card-subtitle mb-2 text-muted">${matjip['category']}</h6>
-                            <p class="card-text">${matjip['address']}</p>
-                            <p class="card-text" style="color:blue;">${matjip['show']}</p>
-                        </div>
-                     </div>`;
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="javascript:click2center(${i})"  class="matjip-title">${matjip['title']}</a></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">${matjip['category']}</h6>
+                                    <p class="card-text">${matjip['address']}</p>
+                                    <p class="card-text" style="color:blue;">${matjip['show']}</p>
+                                </div>
+                             </div>`;
             $('#matjip-box').append(html_temp);
         }
 
@@ -181,8 +187,26 @@
                 } else {
                     infowindow.open(map, marker);
                     map.setCenter(infowindow.position)
+
+                    {#스크롤 움직이기#}
+                    $("#matjip-box").animate({
+                        scrollTop: $("#matjip-box").get(0).scrollTop + $(`#card-${i}`).position().top
+                    }, 2000);
                 }
             });
+        }
+
+        {#카드 눌렀을 때 열고 닫기#}
+
+        function click2center(i) {
+            let marker = markers[i]
+            let infowindow = infowindows[i]
+            if (infowindow.getMap()) {
+                infowindow.close();
+            } else {
+                infowindow.open(map, marker);
+                map.setCenter(infowindow.position)
+            }
         }
 
 
