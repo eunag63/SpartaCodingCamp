@@ -73,6 +73,7 @@
                         let title = diaries[i]['title']
                         let content = diaries[i]['content']
                         let file = diaries[i]['file']
+                        let time = diaries[i]['time']
 
                         // console.log(title, content)
                         let temp_html = `<div class="card">
@@ -80,6 +81,7 @@
                                             <div class="card-body">
                                                 <h5 class="card-title">${title}</h5>
                                                 <p class="card-text">${content}</p>
+                                                <p>${time}</p>
                                             </div>
                                         </div>`
                         $('#card-box').append(temp_html)

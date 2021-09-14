@@ -34,10 +34,14 @@ def save_diary():
     save_to = f'static/{filename}.{extension}'
     file.save(save_to)
 
+    # time
+    nowtime = today.strftime('%Y-%m-%d')
+
     doc = {
         'title': title_receive,
         'content': content_receive,
-        'file': f'{filename}.{extension}'
+        'file': f'{filename}.{extension}',
+        'time': nowtime
     }
 
     db.diary.insert_one(doc)
