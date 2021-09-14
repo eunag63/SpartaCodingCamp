@@ -81,12 +81,21 @@
             margin: 20px auto 20px auto;
         }
 
+        .iw-inner {
+            padding: 10px;
+            font-size: smaller;
+        }
+
 
     </style>
     <script>
         let y_cen = 37.4981125   // lat
         let x_cen = 127.0379399  // long
         let map;
+
+        let markers = [];
+        let infowindows = [];
+
         $(document).ready(function () {
             map = new naver.maps.Map('map', {
                 center: new naver.maps.LatLng(y_cen, x_cen),
@@ -128,8 +137,50 @@
                         let matjip = matjips[i]
                         console.log(matjip)
                         make_card(i, matjip);
+                        let marker = make_marker(matjip);
+                        add_info(i, marker, matjip);
 
                     }
+                }
+            });
+        }
+
+        {#마커 띄우기#}
+
+        function make_marker(matjip) {
+            let marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(matjip["mapy"], matjip["mapx"]),
+                map: map
+            });
+            markers.push(marker)
+            return marker
+        }
+
+        {#정보창 띄우기#}
+
+        function add_info(i, marker, matjip) {
+            let html_temp = `<div class="iw-inner">
+                        <h5>${matjip['title']}</h5>
+                        <p>${matjip['address']}
+                        </div>`;
+            let infowindow = new naver.maps.InfoWindow({
+                content: html_temp,
+                maxWidth: 200,
+                backgroundColor: "#fff",
+                borderColor: "#888",
+                borderWidth: 2,
+                anchorSize: new naver.maps.Size(15, 15),
+                anchorSkew: true,
+                anchorColor: "#fff",
+                pixelOffset: new naver.maps.Point(10, -10)
+            });
+            infowindows.push(infowindow)
+            naver.maps.Event.addListener(marker, "click", function (e) {
+                if (infowindow.getMap()) {
+                    infowindow.close();
+                } else {
+                    infowindow.open(map, marker);
+                    map.setCenter(infowindow.position)
                 }
             });
         }
