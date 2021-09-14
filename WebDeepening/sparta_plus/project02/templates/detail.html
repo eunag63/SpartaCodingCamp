@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Sparta Vocabulary Notebook</title>
 
+
+    {#    og태그, favicon 넣기#}
+    <meta property="og:title" content="Sparta Vocabulary Notebook"/>
+    <meta property="og:description" content="mini project for Web Plus"/>
+    <meta property="og:image" content="{{ url_for('static', filename='logo_red.png') }}"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -24,7 +32,7 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
 
-{#    css#}
+    {#    css#}
     <link href='{{ url_for("static", filename="mystyle.css") }}' rel="stylesheet">
     <style>
 
@@ -111,6 +119,7 @@
         }
 
         {#저장#}
+
         function save_word() {
             $.ajax({
                 type: "POST",
@@ -129,6 +138,7 @@
         }
 
         {#삭제#}
+
         function delete_word() {
             $.ajax({
                 type: "POST",

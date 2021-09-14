@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Sparta Vocabulary Notebook</title>
 
+{#    og태그, favicon 넣기#}
+    <meta property="og:title" content="Sparta Vocabulary Notebook"/>
+    <meta property="og:description" content="mini project for Web Plus"/>
+    <meta property="og:image" content="{{ url_for('static', filename='logo_red.png') }}"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -76,12 +83,18 @@
             background-color: #e21f40;
             color: white;
         }
-        tr.highlight > td  > a {
+
+        tr.highlight > td > a {
             color: white;
         }
     </style>
 
     <script>
+        {#이상한다는 메시지 보내주기#}
+        {% if msg %}
+            alert("{{ msg }}")
+        {% endif %}
+
         let words = {{ words|tojson }};
         let word_list = [];
         for (let i = 0; i < words.length; i++) {
@@ -90,21 +103,22 @@
         console.log(word_list)
 
         {#검색기능#}
-        function find_word(){
+
+        function find_word() {
             let word = $("#input-word").val().toLowerCase()
 
             {#빈칸이면 검색 안되게 막아주기#}
-            if (word == ""){
+            if (word == "") {
                 alert("값을 입력해주세요")
                 return
             }
 
-            if (word_list.includes(word)){
+            if (word_list.includes(word)) {
                 // 리스트에 있으면 하이라이트 + 위로 올려주기
                 $(`#word-${word}`).addClass("highlight")
                 $(`#word-${word}`).siblings().removeClass("highlight")
                 $(`#word-${word}`)[0].scrollIntoView()
-            }else{
+            } else {
                 // 리스트에 없으면 새 단어를 위한 상세페이지로 가기
                 window.location.href = `/detail/${word}?status_give=new`
             }
