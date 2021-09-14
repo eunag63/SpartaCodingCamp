@@ -10,7 +10,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
           crossorigin="anonymous">
 
-{#    Font Awesome#}
+    {#    Font Awesome#}
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
 
@@ -75,6 +75,59 @@
         }
     </style>
 
+    <script>
+        let word = '{{ word }}'
+        $(document).ready(function () {
+            get_definitions()
+        })
+
+        function get_definitions() {
+            $.ajax({
+                type: "GET",
+                url: `https://owlbot.info/api/v4/dictionary/${word}`,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", "Token 7e530070d87fefd64570d05ee1e2db30d67332b4");
+                },
+                data: {},
+                error: function (xhr, status, error) {
+                    alert("에러 발생!");
+                },
+                success: function (response) {
+                    console.log(response)
+
+                    $("#word").text(response["word"])
+                    if (response["pronunciation"] == null) {
+                        $("#pronunciation").text("")
+                    } else{
+                        $("#pronunciation").text(`/${response["pronunciation"]}/`)
+                    }
+
+                    let definitions = response["definitions"]
+                    $("#definitions").empty()
+
+                    for (let i = 0; i < definitions.length; i++) {
+                        let definition = definitions[i]
+                        let temp = ""
+                        if (definition["example"] == null){
+                            temp = `<div style="padding:10px">
+                                        <i>${definition["type"]}</i>
+                                        <br>${definition["definition"]}<br>
+                                    </div>`
+                        } else {
+                            temp = `<div style="padding:10px">
+                                        <i>${definition["type"]}</i>
+                                        <br>${definition["definition"]}<br>
+                                        <span class="example">${definition["example"]}</span>
+                                    </div>`
+                        }
+
+                        $("#definitions").append(temp)
+                    }
+                }
+            })
+        }
+    </script>
+
 </head>
 <body>
 <div class="wrap">
@@ -95,12 +148,7 @@
         </div>
         <hr>
         <div id="definitions">
-            <div style="padding:10px">
-                <i>noun</i>
-                <br>a nocturnal bird of prey with large eyes, a facial disc, a hooked beak, and typically a loud
-                hooting call.<br>
-                <span class="example">I love reaching out into that absolute silence, when you can hear the owl or the wind.</span>
-            </div>
+
         </div>
     </div>
 </div>
