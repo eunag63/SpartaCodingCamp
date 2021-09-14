@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>간단한 지도 표시하기</title>
+    <script type="text/javascript"
+            src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=2qh48hh78k"></script>
+    <script src=" https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <style>
+        #map {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            {#let map = new naver.maps.Map('map', {#}
+            {#    center: new naver.maps.LatLng(37.4981125, 127.0379399),#}
+            {#    zoom: 10#}
+
+            let map = new naver.maps.Map('map', {
+                center: new naver.maps.LatLng(37.4981125, 127.0379399),
+                zoom: 10,
+                zoomControl: true,
+                zoomControlOptions: {
+                    style: naver.maps.ZoomControlStyle.SMALL,
+                    position: naver.maps.Position.TOP_RIGHT
+                }
+            });
+
+            {#let marker = new naver.maps.Marker({#}
+            {#    position: new naver.maps.LatLng(37.4981125, 127.0379399),#}
+            {#    map: map#}
+
+
+            let marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(37.4981125, 127.0379399),
+                map: map,
+                icon: "{{ url_for('static', filename='rtan_heart.png') }}"
+            });
+
+            let infowindow = new naver.maps.InfoWindow({
+                content: `<div style="width: 50px;height: 20px;text-align: center"><h5>안녕!</h5></div>`,
+            });
+
+            naver.maps.Event.addListener(marker, "click", function () {
+                console.log(infowindow.getMap()); // 정보창이 열려있을 때는 연결된 지도를 반환하고 닫혀있을 때는 null을 반환
+                if (infowindow.getMap()) {
+                    infowindow.close();
+                } else {
+                    infowindow.open(map, marker);
+                }
+            });
+        })
+    </script>
+</head>
+<body>
+<div id="map"></div>
+</body>
+</html>
