@@ -1,9 +1,3 @@
-$(document).ready(function () {
-    get_posts()
-})
-
-
-
 // #좋아요
 function toggle_like(post_id, type) {
     console.log(post_id, type)
@@ -97,11 +91,14 @@ function num2str(count) {
 }
 
 
-function get_posts() {
+function get_posts(username) {
+    if (username == undefined) {
+        username = ""
+    }
     $("#post-box").empty()
     $.ajax({
         type: "GET",
-        url: "/get_posts",
+        url: `/get_posts?username_give=${username}`,
         data: {},
         success: function (response) {
             if (response["result"] == "success") {
