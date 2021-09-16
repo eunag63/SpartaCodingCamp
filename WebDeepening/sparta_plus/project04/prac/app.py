@@ -55,12 +55,15 @@ def register():
 # 저장하기 전에, pw를 sha256 방법(=단방향 암호화. 풀어볼 수 없음)으로 암호화해서 저장합니다.
 @app.route('/api/register', methods=['POST'])
 def api_register():
+    # request.form을 이용해서 아이디, 비밀번호, 닉네임 받음
     id_receive = request.form['id_give']
     pw_receive = request.form['pw_give']
     nickname_receive = request.form['nickname_give']
 
+    # 비밀번호의 해쉬 : hashlib.sha256()을 사용해서 받은 비밀번호 값을 암호화 시킴
     pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
 
+    # DB에 저장
     db.user.insert_one({'id': id_receive, 'pw': pw_hash, 'nick': nickname_receive})
 
     return jsonify({'result': 'success'})
