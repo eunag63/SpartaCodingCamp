@@ -29,11 +29,15 @@
                 $.ajax({
                     type: "POST",
                     url: "/api/login",
+                    // 서버로 아이디와 패스워드를 보냄
                     data: {id_give: $('#userid').val(), pw_give: $('#userpw').val()},
                     success: function (response) {
+                        // api login이 성공하면 (=아이디와 비밀번호가 있는 사람이 존재한다는 것을 알았을 때)
                         if (response['result'] == 'success') {
                             // 로그인이 정상적으로 되면, 토큰을 받아옵니다.
                             // 이 토큰을 mytoken이라는 키 값으로 쿠키에 저장합니다.
+
+                            // 토큰을 mytoken이라는 값으로 쿠키에 저장을 해준다.
                             $.cookie('mytoken', response['token']);
 
                             alert('로그인 완료!')

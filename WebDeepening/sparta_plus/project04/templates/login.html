@@ -63,8 +63,10 @@
                     username_give: username,
                     password_give: password
                 },
+                // api login에서 성공하면
                 success: function (response) {
                     if (response['result'] == 'success') {
+                        // 토큰을 mytoken이라는 값으로 쿠키에 저장합니다.
                         $.cookie('mytoken', response['token'], {path: '/'});
                         window.location.replace("/")
                     } else {

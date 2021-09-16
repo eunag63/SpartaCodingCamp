@@ -18,14 +18,19 @@ db = client.dbsparta_plus_week4
 
 @app.route('/')
 def home():
+    # token_recive = 발금해줬던 JWT 토큰!
     token_receive = request.cookies.get('mytoken')
     try:
+        # SECRET_KEY를 이용해서 복호화(jwt.decode)를 해주고 payload를 꺼냄
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+        # payload에 있는 아이디를 꺼내서 해당하는 유저가 실제로 있는지 확인해서
         user_info = db.users.find_one({"username": payload["id"]})
+        # 있으면 index.html로 넘겨주기
         return render_template('index.html', user_info=user_info)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
+        # 없으면 에러
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 
@@ -56,14 +61,22 @@ def sign_in():
     username_receive = request.form['username_give']
     password_receive = request.form['password_give']
 
+    # DB에는 암호화된 비밀번호가 들어가 있기 때문에 똑같이 해쉬함수 사용
     pw_hash = hashlib.sha256(password_receive.encode('utf-8')).hexdigest()
+    # id, pw를 가지고 해당 유저 찾기
     result = db.users.find_one({'username': username_receive, 'password': pw_hash})
 
+    # 유저가 맞으면 클라이언트한테 토큰 던져주기 ('로그인 한 사람이다')
     if result is not None:
         payload = {
+            # 1. 아이디 저장
             'id': username_receive,
+            # 2. 로그인이 언제까지 유효한지에 대한 정보 (datetime.utcnow() : 지금부터)
             'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
+        # payload를 암호화 해서 유저한테 전달
+        # 암호화 안하면 다른 사람이 사용할 수 있음
+        # 암호화 할 때는 서버만의 특별한 비밀 키로 암호화 해줌 (=SECRET_KEY) 각자 세팅 가능 맨 위에 있음
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
         return jsonify({'result': 'success', 'token': token})
